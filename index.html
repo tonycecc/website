@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anthony Cecchini</title>
+    <style>
+        body {
+            background-color: #26292f;
+            font-family: "Barlow";
+            color: whitesmoke;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .intro-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            min-height: 300px;
+            max-width: 1000px;
+            /* Add this line to limit overall width */
+            margin-left: auto;
+            /* Center the section */
+            margin-right: auto;
+            /* Center the section */
+        }
+
+        .intro-text {
+            flex: 0 1 600px;
+            /* Change from flex: 1 to limit growth */
+            padding-right: 30px;
+            padding-left: 30px;
+            /* Add this if image is on left */
+        }
+
+        .intro-heading {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .image-placeholder {
+            flex: 0 0 300px;
+            /* Change from flex: 1 to a fixed width */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .round-image {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background-color: #26292f;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .round-image img {
+            float: left;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .color-controls {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .color-controls label {
+            margin-bottom: 10px;
+            /* Space between label and slider */
+            font-size: 1rem;
+            color: whitesmoke;
+        }
+
+        /* Popup container */
+        .popup {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            /* Black background with opacity */
+            z-index: 1000;
+            /* Ensure it's on top */
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .popup.show {
+            opacity: 1;
+        }
+
+        /* Popup content */
+        .popup-content {
+            background-color: #26292f;
+            /* Match your page's background */
+            margin: 10% auto;
+            /* Center the popup */
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            /* Adjust width as needed */
+            text-align: center;
+            position: relative;
+        }
+
+        /* Close button */
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: whitesmoke;
+        }
+
+        .close:hover {
+            color: #FF5733;
+            /* Change color on hover */
+        }
+
+        /* Slider styling (same as before) */
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(to right,
+                    #FF5733,
+                    #33FF57,
+                    #3357FF,
+                    #FF33F5,
+                    #33FFF5,
+                    #FFFFFF,
+                    #F5FF33,
+                    #9933FF,
+                    #FF8333,
+                    #33FF83,
+                    #8333FF);
+            border-radius: 5px;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: whitesmoke;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: whitesmoke;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .projects-section {
+            padding: 40px 0;
+        }
+
+        .projects-heading {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .project-card {
+            background-color: #5e636f;
+            border-radius: 30px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .project-card:hover {
+            background-color: #555c6c;
+        }
+
+        .colorButton {
+            width: 130px;
+            height: 45px;
+            font-size: 1.1em;
+            cursor: pointer;
+            background-color: whitesmoke;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            transition: all .4s;
+        }
+
+        .colorButton:hover {
+            border-radius: 5px;
+            transform: translateY(-10px);
+            box-shadow: 0 7px 0 -2px #f85959,
+                0 15px 0 -4px #39a2db,
+                0 16px 10px -3px #39a2db;
+        }
+
+        .colorButton:active {
+            transition: all 0.2s;
+            transform: translateY(-5px);
+            box-shadow: 0 2px 0 -2px #f85959,
+                0 8px 0 -4px #39a2db,
+                0 12px 10px -3px #39a2db;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <section class="intro-section">
+
+            <div class="image-placeholder">
+                <div class="round-image">
+                    <img src="profileimg.png" alt="Anthony's Photo">
+                </div>
+            </div>
+
+            <div class="intro-text">
+                <h1 class="intro-heading" id="introText">
+                    <span id="greeting"></span>, I'm Anthony.
+                </h1>
+
+                <!-- Button to open the popup -->
+                <button class="colorButton" id="openPopup">Color Picker</button>
+
+                <!-- Popup container -->
+                <div id="popup" class="popup">
+                    <div class="popup-content">
+                        <span id="closePopup" class="close">&times;</span>
+                        <h2>Choose Text Color</h2>
+                        <div class="color-controls">
+                            <input type="range" id="colorSlider" min="0" max="100" value="50" class="slider">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="projects-section">
+            <h2 class="projects-heading">My Projects</h2>
+
+            <div class="project-card">
+                <h3>Minimax Tic-Tac-Toe</h3>
+                <p>This is a JavaScript implementation of Tic-Tac-Toe using Minimax for AI player. I chose to do this in
+                    JS becuase
+                    i was tired of making terminal projects for course work.
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Time-based greeting
+        function setGreeting() {
+            const greeting = document.getElementById('greeting');
+            const hour = new Date().getHours();
+
+            if (hour >= 5 && hour < 12) {
+                greeting.textContent = "Good morning";
+            } else if (hour >= 12 && hour < 18) {
+                greeting.textContent = "Good afternoon";
+            } else {
+                greeting.textContent = "Good evening";
+            }
+        }
+
+        // Set greeting when page loads
+        setGreeting();
+
+        // Update greeting every minute (in case someone keeps the page open across time periods)
+        setInterval(setGreeting, 60000);
+
+        const colorSlider = document.getElementById('colorSlider');
+        const introText = document.getElementById('introText');
+
+        // Array of colors to cycle through
+        const colors = [
+            '#FF5733', // Red-Orange
+            '#33FF57', // Green
+            '#3357FF', // Blue
+            '#FF33F5', // Pink
+            '#33FFF5', // Cyan
+            '#FFFFFF', // White
+            '#F5FF33', // Yellow
+            '#9933FF', // Purple
+            '#FF8333', // Orange
+            '#33FF83', // Mint
+            '#8333FF'  // Violet
+        ];
+
+        colorSlider.addEventListener('input', function () {
+            // Map slider value (0-100) to an index in the colors array
+            const index = Math.floor(this.value / (100 / colors.length));
+            introText.style.color = colors[index];
+        })
+        // Get references to the popup and buttons
+        const popup = document.getElementById("popup");
+        const openPopupButton = document.getElementById("openPopup");
+        const closePopupButton = document.getElementById("closePopup");
+
+        // Open the popup
+        openPopupButton.addEventListener("click", () => {
+            popup.style.display = "block";
+            setTimeout(() => popup.classList.add("show"), 10);
+        });
+
+        closePopupButton.addEventListener("click", () => {
+            popup.classList.remove("show");
+            setTimeout(() => popup.style.display = "none", 300);
+        });
+
+        // Close the popup if the user clicks outside of it
+        window.addEventListener("click", (event) => {
+            if (event.target === popup) {
+                popup.style.display = "none";
+            }
+        });
+    </script>
+</body>
+
+</html>
